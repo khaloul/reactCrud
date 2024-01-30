@@ -8,6 +8,8 @@ const UserList = ({ users, viewUser, editUser, deleteUser }) => {
         {users.map((user) => (
           <li key={user.id}>
             {user.name}
+            
+            {user.username}
             <button onClick={() => viewUser(user)}>View</button>
             <button onClick={() => editUser(user)}>Edit</button>
             <button onClick={() => deleteUser(user.id)}>Delete</button>

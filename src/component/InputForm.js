@@ -4,10 +4,11 @@ const InputForm = ({ addUser, updateUser, initialData }) => {
   const [formData, setFormData] = useState(initialData);
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
+    const { name, username,value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+      [username]:value,
     }));
   };
 
