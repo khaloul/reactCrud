@@ -1,18 +1,16 @@
 import React from 'react';
-
+import './style.css'
 const UserList = ({ users, viewUser, editUser, deleteUser }) => {
   return (
     <div>
-      <h2>User List</h2>
-      <ul>
+      <h2 className='h2'>User List</h2>
+      <ul className='ul'>
         {users.map((user) => (
-          <li key={user.id}>
+          <li className='il'  key={user.id}>
             {user.name}
-            
-            {user.username}
-            <button onClick={() => viewUser(user)}>View</button>
-            <button onClick={() => editUser(user)}>Edit</button>
-            <button onClick={() => deleteUser(user.id)}>Delete</button>
+            <button className='ilbtn' onClick={() => viewUser(user)}>View</button>
+            <button className='ilbtn' onClick={() => editUser(user)}>Edit</button>
+            <button className='ilbtn' onClick={() => deleteUser(user.id)}>Delete</button>
           </li>
         ))}
       </ul>

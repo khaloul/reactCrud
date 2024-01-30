@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-
+import './style.css'
 const InputForm = ({ addUser, updateUser, initialData }) => {
   const [formData, setFormData] = useState(initialData);
 
   const handleInputChange = (event) => {
-    const { name, username,value } = event.target;
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-      [username]:value,
     }));
   };
 
@@ -24,15 +23,17 @@ const InputForm = ({ addUser, updateUser, initialData }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
+      <div className='inputgr'>
+      <label className='label'>
         Name:
-        <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
       </label>
-      <label>
-      username:
-        <input type="text" name="username" value={formData.username} onChange={handleInputChange} />
+      <input className='input' type="text" name="name" value={formData.name} onChange={handleInputChange} /></div>
+      <div className='inputgr'>
+      <label className='label'>
+      Nickname:
       </label>
-      <button type="submit">Submit</button>
+      <input className='input' type="text" name="username" value={formData.username} onChange={handleInputChange} /></div>
+      <button type="submit" className='btn'>Submit</button>
     </form>
   );
 };

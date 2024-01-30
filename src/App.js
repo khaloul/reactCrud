@@ -3,10 +3,12 @@ import InputForm from './component/InputForm';
 import UserList from './component/UserList';
 import UserDetail from './component/UserDetail';
 import UserEdit from './component/UserEdit';
+import './component/style.css';
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedViewUser, setSelectedViewUser] = useState(null);
+  const [selectedEditUser, setSelectedEditUser] = useState(null);
 
   // Fetch users on component mount
   useEffect(() => {
@@ -34,8 +36,12 @@ function App() {
         },
         body: JSON.stringify(userData),
       });
-      const data = await response.json();
-      setUsers([...users, data]);
+      if (response.ok) {
+        const newUser = await response.json();
+        setUsers(prevUsers => [...prevUsers, newUser]);
+      } else {
+        console.error('Failed to add user');
+      }
     } catch (error) {
       console.error('Error adding user:', error);
     }
@@ -51,12 +57,16 @@ function App() {
         },
         body: JSON.stringify(userData),
       });
-      const updatedUser = await response.json();
-      const updatedUsers = users.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user
-      );
-      setUsers(updatedUsers);
-      setSelectedUser(null);
+      if (response.ok) {
+        const updatedUser = await response.json();
+        const updatedUsers = users.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
+        );
+        setUsers(updatedUsers);
+        setSelectedEditUser(null);
+      } else {
+        console.error('Failed to update user');
+      }
     } catch (error) {
       console.error('Error updating user:', error);
     }
@@ -77,13 +87,18 @@ function App() {
 
   return (
     <div>
-      <h1>CRUD Application</h1>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"></link>
+      <h1 className='h1'>CRUD Application</h1>
       <InputForm addUser={addUser} updateUser={updateUser} initialData={{ id: '', name: '', username: '' }} />
-      <UserList users={users} viewUser={setSelectedUser} editUser={setSelectedUser} deleteUser={deleteUser} />
-      {selectedUser ? (
+      <UserList users={users} viewUser={setSelectedViewUser} editUser={setSelectedEditUser} deleteUser={deleteUser} />
+      {selectedViewUser ? (
         <div>
-          <UserDetail user={selectedUser} />
-          <UserEdit user={selectedUser} updateUser={updateUser} />
+          <UserDetail user={selectedViewUser} />
+        </div>
+      ) : null}
+      {selectedEditUser ? (
+        <div>
+          <UserEdit user={selectedEditUser} updateUser={updateUser} /> {/* Pass updateUser here */}
         </div>
       ) : null}
     </div>

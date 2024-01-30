@@ -1,9 +1,54 @@
-.h1{
-    font-family: Comic sans ms;
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Roboto:wght@300&display=swap');
+.h1 {
+    font-family: 'Roboto', sans-serif;
     color: #89D8E5;
+    text-align: center;
 }
-.h1v2{
-    margin-top: 10px;
-    font-family: Comic sans ms;
-    color: blue;
+.h2 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    color: #7E64AF;
+}
+.ul {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+    width: fit-content;
+    font-family: 'Roboto', sans-serif;
+    flex: 1;
+}
+.il{
+    margin-bottom: 10px;
+}
+.ilbtn {
+    margin-left: 20px;
+    background-color: #706A7A;
+    color: white;
+    border: none;
+    padding: 10px 20px; 
+    border-radius: 5px; /* Adjust border radius as needed */
+    cursor: pointer;
+}
+.inputgr {
+    font-family: 'Roboto', sans-serif;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-left: 50px;
+}
+
+.label {
+    margin-right: 10px;
+}
+
+.input {
+    flex: 1;
+}
+.btn {
+    margin-left: 180px;
+    background-color: #89D8E5;
+    color: white;
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    border-radius: 5px; /* Adjust border radius as needed */
+    cursor: pointer;
 }
