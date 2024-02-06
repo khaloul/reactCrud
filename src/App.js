@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import InputForm from './component/InputForm';
 import UserList from './component/UserList';
 import UserDetail from './component/UserDetail';
@@ -10,35 +11,24 @@ function App() {
   const [selectedViewUser, setSelectedViewUser] = useState(null);
   const [selectedEditUser, setSelectedEditUser] = useState(null);
 
-  // Fetch users on component mount
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(); 
   }, []);
 
-  // Fetch users from API
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/');
-      const data = await response.json();
-      setUsers(data.users);
+      const response = await axios.get('http://127.0.0.1:8000/user/');
+      setUsers(response.data.users);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
   };
-
-  // Create a new user
+  
   const addUser = async (userData) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/user/create/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      if (response.ok) {
-        const newUser = await response.json();
-        setUsers(prevUsers => [...prevUsers, newUser]);
+      const response = await axios.post('http://127.0.0.1:8000/user/create/', userData);
+      if (response.status === 201) {
+        setUsers(prevUsers => [...prevUsers, response.data]);
       } else {
         console.error('Failed to add user');
       }
@@ -47,18 +37,11 @@ function App() {
     }
   };
 
-  // Update an existing user
   const updateUser = async (userData) => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/user/update/${userData.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-      if (response.ok) {
-        const updatedUser = await response.json();
+      const response = await axios.put(`http://127.0.0.1:8000/user/update/${userData.id}`, userData);
+      if (response.status === 200) {
+        const updatedUser = response.data;
         const updatedUsers = users.map((user) =>
           user.id === updatedUser.id ? updatedUser : user
         );
@@ -72,12 +55,9 @@ function App() {
     }
   };
 
-  // Delete a user
   const deleteUser = async (userId) => {
     try {
-      await fetch(`http://127.0.0.1:8000/user/delete/${userId}`, {
-        method: 'DELETE',
-      });
+      await axios.delete(`http://127.0.0.1:8000/user/delete/${userId}`);
       const updatedUsers = users.filter((user) => user.id !== userId);
       setUsers(updatedUsers);
     } catch (error) {
@@ -98,7 +78,7 @@ function App() {
       ) : null}
       {selectedEditUser ? (
         <div>
-          <UserEdit user={selectedEditUser} updateUser={updateUser} /> {/* Pass updateUser here */}
+          <UserEdit user={selectedEditUser} updateUser={updateUser} />
         </div>
       ) : null}
     </div>
