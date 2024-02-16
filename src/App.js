@@ -19,6 +19,7 @@ function App() {
     try {
       const response = await axios.get('http://127.0.0.1:8000/user/');
       setUsers(response.data.users);
+      setSelectedEditUser(null)
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -37,23 +38,7 @@ function App() {
     }
   };
 
-  const updateUser = async (userData) => {
-    try {
-      const response = await axios.put(`http://127.0.0.1:8000/user/update/${userData.id}`, userData);
-      if (response.status === 200) {
-        const updatedUser = response.data;
-        const updatedUsers = users.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user
-        );
-        setUsers(updatedUsers);
-        setSelectedEditUser(null);
-      } else {
-        console.error('Failed to update user');
-      }
-    } catch (error) {
-      console.error('Error updating user:', error);
-    }
-  };
+  
 
   const deleteUser = async (userId) => {
     try {
@@ -69,7 +54,7 @@ function App() {
     <div>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"></link>
       <h1 className='h1'>CRUD Application</h1>
-      <InputForm addUser={addUser} updateUser={updateUser} initialData={{ id: '', name: '', username: '' }} />
+      <InputForm addUser={addUser} initialData={{ id: '', name: '', username: '' }} />
       <UserList users={users} viewUser={setSelectedViewUser} editUser={setSelectedEditUser} deleteUser={deleteUser} />
       {selectedViewUser ? (
         <div>
@@ -78,7 +63,7 @@ function App() {
       ) : null}
       {selectedEditUser ? (
         <div>
-          <UserEdit user={selectedEditUser} updateUser={updateUser} />
+          <UserEdit user={selectedEditUser} updateUser={fetchUsers}/>
         </div>
       ) : null}
     </div>
